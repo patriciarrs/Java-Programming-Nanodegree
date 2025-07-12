@@ -1,10 +1,10 @@
 package _4objectorientedprogramming._6polymorphism;
 
 public class Vehicle {
-    protected String start;
-    protected String stop;
-    protected String speed;
-    protected String direction;
+    private String start;
+    private String stop;
+    private String speed;
+    private String direction;
 
     public Vehicle(String start, String stop, String speed, String direction) {
         this.start = start;
