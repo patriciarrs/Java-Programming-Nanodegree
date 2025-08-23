@@ -21,14 +21,13 @@ public final class LambdasMain {
 
         System.out.println(numberOfWhitespaceStrings + " whitespace strings");
 
+        /* BinaryOperator is a functional interface that defines a single operation between two integers. */
         BinaryOperator<Integer> add =
-                (Integer a, Integer b) -> {
-                    return a + b;
-                };
+                (Integer a, Integer b) -> a + b;
 
         System.out.println(add.apply(1, 2));
     }
-    
+
     /**
      * Returns the number of strings that match a given condition.
      *
