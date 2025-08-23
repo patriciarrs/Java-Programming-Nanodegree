@@ -5,7 +5,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 
 /* Key Terms:
- * Lambda expression: An expression that can be used to succinctly implement certain interfaces in Java.
+ * Lambda expression: An expression that can be used to succinctly implement functional interfaces.
  * Predicate: A function that takes one argument and returns a boolean.
  * ***
  * Predicate<T> is an interface for predicate functions that take an argument of type T.
