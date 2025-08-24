@@ -25,12 +25,13 @@ public final class ReadFilesMain {
                 .forEach(System.out::println);
 
         /* Alternatively, another approach to handling exceptions is to use a for loop
-        * instead of using streams and lambdas. */
+         * instead of using streams and lambdas. */
         List<String> fileNames = Arrays.asList("file-a.txt", "file-b.txt", "file-c.txt");
 
         for (String fileName : fileNames) {
             for (String line : Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8)) {
                 System.out.println(line);
             }
+        }
     }
 }
