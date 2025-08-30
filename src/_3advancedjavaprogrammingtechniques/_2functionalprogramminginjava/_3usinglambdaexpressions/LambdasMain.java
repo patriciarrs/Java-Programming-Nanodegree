@@ -17,7 +17,7 @@ public final class LambdasMain {
         List<String> input = List.of("hello", "\t   ", "world", "", "\t", " ", "goodbye", "  ");
 
         long numberOfWhitespaceStrings =
-                countMatchingStrings(input, s -> s.trim().isEmpty());
+                countMatchingStrings(input, String::isBlank);
 
         System.out.println(numberOfWhitespaceStrings + " whitespace strings");
 

@@ -5,7 +5,7 @@ public final class Main {
      * In this code, the lambda is defined inside a static function, so there is no enclosing class.
      */
     public static void main(String[] args) {
-        Runnable r = () -> System.out.println(this.getClass());
-        r.run();
+        /*Runnable r = () -> System.out.println(this.getClass());
+        r.run();*/
     }
 }
