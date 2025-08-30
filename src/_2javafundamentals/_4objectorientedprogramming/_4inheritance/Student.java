@@ -1,8 +1,11 @@
 package _2javafundamentals._4objectorientedprogramming._4inheritance;
 
+import java.time.Year;
+
 public class Student extends Person {
     private String studentId;
     private int score;
+    private Year graduationYear;
 
     public Student(String firstName, String lastName, String studentId) {
         super(firstName, lastName);
@@ -19,6 +22,10 @@ public class Student extends Person {
 
     public int getScore() {
         return score;
+    }
+
+    public Year getGraduationYear() {
+        return graduationYear;
     }
 
     @Override
