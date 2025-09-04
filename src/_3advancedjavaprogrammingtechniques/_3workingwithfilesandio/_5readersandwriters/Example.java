@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 public class Example {
     /* Readers and Writers are the next level of abstraction built on top of input and output streams.
-     * These interfaces read and write text characters.
+     * These interfaces read and write text characters and use a stream behind the scenes.
      */
 
     void reader() throws IOException {
