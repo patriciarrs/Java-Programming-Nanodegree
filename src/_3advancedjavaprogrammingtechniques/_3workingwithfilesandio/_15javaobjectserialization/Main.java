@@ -8,6 +8,11 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 
+/*
+ * ! -> We're not really supposed to use Java's default serialization to store and transmit Java objects.
+ * It's valuable to understand that Java's built-in object serialization exists, and how to use it,
+ * but most of the time we should avoid using it due to critical security issues.
+ */
 public final class Main {
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
