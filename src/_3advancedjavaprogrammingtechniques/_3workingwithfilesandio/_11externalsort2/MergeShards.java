@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.PriorityQueue;
 
 public final class MergeShards {
-    static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         if (args.length != 2) {
             System.out.println("Usage: MergeShards [input folder] [output file]");
             return;
