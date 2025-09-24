@@ -38,8 +38,8 @@ public final class Main {
 
         try (ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(outputPath))) {
             out.writeObject(client);
+            System.out.println("Wrote to " + outputPath.toAbsolutePath());
         }
-        System.out.println("Wrote to " + outputPath.toAbsolutePath());
 
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(outputPath))) {
             UdacisearchClient deserialized = (UdacisearchClient) in.readObject();
