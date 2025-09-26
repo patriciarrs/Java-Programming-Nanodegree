@@ -9,6 +9,19 @@ import java.util.Objects;
  * - The instance is initialized only when it's first used (a.k.a. lazy initialization).
  */
 
+/*
+ * Disadvantages of Singletons
+ *
+ * - Can cause brittle assumptions in the code. If later on, we decide we need multiple instances of the class, we might have to refactor a bunch of code.
+ * E.g.: Eventually we decide we need a testing environment in addition to the production environment - we'll create a separate database for the testing environment,
+ * but then we need 2 different database instances (we might end up rewriting a lot of code to account for the new database).
+ *
+ * - Code that depends on singletons can become hard to test.
+ * E.g.: All the clients get an instance of the singleton through the same static factory method.
+ * What happens if we're writing a test for that client, and we want to use a fake database?
+ * For cases like this, we should consider using dependency injection to manage your singletons.
+ */
+
 /**
  * The Database class is final - it can't be extended.
  * <p>
