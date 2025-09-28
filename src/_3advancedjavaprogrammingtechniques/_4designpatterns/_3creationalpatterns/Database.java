@@ -1,4 +1,4 @@
-package _3advancedjavaprogrammingtechniques._4designpatterns._creationalpatterns;
+package _3advancedjavaprogrammingtechniques._4designpatterns._3creationalpatterns;
 
 import java.util.Objects;
 
