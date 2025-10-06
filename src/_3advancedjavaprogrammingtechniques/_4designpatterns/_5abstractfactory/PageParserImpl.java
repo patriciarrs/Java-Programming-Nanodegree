@@ -1,3 +1,4 @@
+/*
 package _3advancedjavaprogrammingtechniques._4designpatterns._5abstractfactory;
 
 import org.jsoup.Jsoup;
@@ -21,35 +22,43 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+*/
 /**
  * An implementation of {@link PageParser} that works for both local and remote files.
  *
  * <p>HTML parsing is done using the JSoup library. This class is a thin adapter around JSoup's API,
  * since JSoup does not know how to correctly resolve relative hyperlinks when parsing HTML from local files.
- */
+ *//*
+
 final class PageParserImpl implements PageParser {
 
-    /**
-     * Matches whitespace characters.
-     */
+    */
+/**
+ * Matches whitespace characters.
+ *//*
+
     private static final Pattern WHITESPACE = Pattern.compile("\\s+");
 
-    /**
-     * Matches non-word characters.
-     */
+    */
+/**
+ * Matches non-word characters.
+ *//*
+
     private static final Pattern NON_WORD_CHARACTERS = Pattern.compile("\\W");
 
     private final String uri;
     private final Duration timeout;
     private final List<Pattern> ignoredWords;
 
-    /**
-     * Constructs a page parser with the given parameters.
-     *
-     * @param uri          the URI of the file to parse.
-     * @param timeout      the timeout to use when downloading the file, if it is remote.
-     * @param ignoredWords patterns of which words should be ignored by the {@link #parse()} method.
-     */
+    */
+/**
+ * Constructs a page parser with the given parameters.
+ *
+ * @param uri          the URI of the file to parse.
+ * @param timeout      the timeout to use when downloading the file, if it is remote.
+ * @param ignoredWords patterns of which words should be ignored by the {@link #parse()} method.
+ *//*
+
     PageParserImpl(String uri, Duration timeout, List<Pattern> ignoredWords) {
         // From the 3 constructor arguments, only the URL comes from the factory's (PageParserFactoryImpl) get method.
         this.uri = Objects.requireNonNull(uri);
@@ -115,10 +124,12 @@ final class PageParserImpl implements PageParser {
         return builder.build();
     }
 
-    /**
-     * Returns a Jsoup {@link Document} representation of the file at the given {@link URI}, which may refer to a local
-     * document or a remote web page.
-     */
+    */
+/**
+ * Returns a Jsoup {@link Document} representation of the file at the given {@link URI}, which may refer to a local
+ * document or a remote web page.
+ *//*
+
     private Document parseDocument(URI uri) throws IOException {
         if (!isLocalFile(uri)) {
             return Jsoup.parse(uri.toURL(), (int) timeout.toMillis());
@@ -133,10 +144,12 @@ final class PageParserImpl implements PageParser {
         }
     }
 
-    /**
-     * Returns true if and only if the given {@link URI} represents a local file.
-     */
+    */
+/**
+ * Returns true if and only if the given {@link URI} represents a local file.
+ *//*
+
     private static boolean isLocalFile(URI uri) {
         return uri.getScheme() != null && uri.getScheme().equals("file");
     }
-}
+}*/

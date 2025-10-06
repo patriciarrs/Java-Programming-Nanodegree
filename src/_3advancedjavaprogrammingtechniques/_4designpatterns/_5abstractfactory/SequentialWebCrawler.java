@@ -1,3 +1,4 @@
+/*
 package _3advancedjavaprogrammingtechniques._4designpatterns._5abstractfactory;
 
 import com.udacity.webcrawler.json.CrawlResult;
@@ -15,9 +16,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+*/
 /**
  * A {@link WebCrawler} that downloads and processes one page at a time.
- */
+ *//*
+
 final class SequentialWebCrawler implements WebCrawler {
 
     private final Clock clock;
@@ -27,17 +30,19 @@ final class SequentialWebCrawler implements WebCrawler {
     private final int maxDepth;
     private final List<Pattern> ignoredUrls;
 
-    /*
-     * Clients first need an instance of the factory.
-     * Here, they call the constructor.
-     * PageParserFactory parserFactory = new PageParserFactoryImpl(Duration.ofSeconds(5), List.of("foo"));
-     * Notice that the timeout and ignored list of PageParsers is determined when the factory is constructed and the Parse URL is determined by the parameter of get.
-     *
-     * In a lot of cases, clients will obtain a factory through dependency injection.
-     * Clients can only create PageParsers by calling the get method.
-     * Clients don't actually know they're getting a PageParserImpl.
-     * All they care about is: the returned object implements the PageParser interface.
-     */
+    */
+/*
+ * Clients first need an instance of the factory.
+ * Here, they call the constructor.
+ * PageParserFactory parserFactory = new PageParserFactoryImpl(Duration.ofSeconds(5), List.of("foo"));
+ * Notice that the timeout and ignored list of PageParsers is determined when the factory is constructed and the Parse URL is determined by the parameter of get.
+ *
+ * In a lot of cases, clients will obtain a factory through dependency injection.
+ * Clients can only create PageParsers by calling the get method.
+ * Clients don't actually know they're getting a PageParserImpl.
+ * All they care about is: the returned object implements the PageParser interface.
+ *//*
+
 
     @Inject
     SequentialWebCrawler(
@@ -96,8 +101,10 @@ final class SequentialWebCrawler implements WebCrawler {
             return;
         }
         visitedUrls.add(url);
-        /* When we want to create a new page parser, we just call the get method and pass in the URL of the website we want to parse.
-         * Thanks to the abstract factory pattern and dependency injection, all the other dependencies of the PageParser and the PageParserFactory are filled out for us.  */
+        */
+/* When we want to create a new page parser, we just call the get method and pass in the URL of the website we want to parse.
+ * Thanks to the abstract factory pattern and dependency injection, all the other dependencies of the PageParser and the PageParserFactory are filled out for us.  *//*
+
         PageParser.Result result = parserFactory.get(url).parse();
         for (Map.Entry<String, Integer> e : result.getWordCounts().entrySet()) {
             if (counts.containsKey(e.getKey())) {
@@ -111,3 +118,4 @@ final class SequentialWebCrawler implements WebCrawler {
         }
     }
 }
+*/

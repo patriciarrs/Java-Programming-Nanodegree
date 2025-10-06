@@ -1,3 +1,4 @@
+/*
 package _3advancedjavaprogrammingtechniques._4designpatterns._5abstractfactory;
 
 package com.udacity.webcrawler.parser;
@@ -10,9 +11,11 @@ import java.time.Duration;
 import java.util.List;
 import java.util.regex.Pattern;
 
+*/
 /**
  * A {@link PageParserFactory} that wraps its returned instances using a {@link Profiler}.
- */
+ *//*
+
 final class PageParserFactoryImpl implements PageParserFactory {
     private final Profiler profiler;
     private final List<Pattern> ignoredWords;
@@ -31,9 +34,11 @@ final class PageParserFactoryImpl implements PageParserFactory {
         // Here, parse the page with the initial timeout (instead of just the time remaining), to make
         // the download less likely to fail. Deadline enforcement should happen at a higher level.
 
-        /* The URL is passed into the constructor of PageParserImpl but the other 2 constructor arguments come from properties of the PageParserFactoryImpl.
-         * This saves clients from having to specify the same parameters over and over. */
+        */
+/* The URL is passed into the constructor of PageParserImpl but the other 2 constructor arguments come from properties of the PageParserFactoryImpl.
+ * This saves clients from having to specify the same parameters over and over. *//*
+
         PageParser delegate = new PageParserImpl(url, timeout, ignoredWords);
         return profiler.wrap(PageParser.class, delegate);
     }
-}
+}*/

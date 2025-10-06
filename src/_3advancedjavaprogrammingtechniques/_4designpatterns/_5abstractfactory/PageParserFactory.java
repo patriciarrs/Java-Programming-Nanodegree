@@ -1,5 +1,7 @@
+/*
 package _3advancedjavaprogrammingtechniques._4designpatterns._5abstractfactory;
 
+*/
 /*
  * A factory is anything that creates objects.
  * Factories are useful for hiding construction details from callers.
@@ -10,25 +12,34 @@ package _3advancedjavaprogrammingtechniques._4designpatterns._5abstractfactory;
  * When to Use Abstract Factories?
  * We want to hide construction details from callers.
  * We want to encapsulate construction of several related objects into a single Java interface.
- */
+ *//*
 
+
+ */
 /**
  * A factory interface that supplies instances of {@link PageParser} that have common parameters (such as the timeout
  * and ignored words) preset from injected values.
- */
-public interface PageParserFactory {
-    /* PageParserFactory is an interface, but it doesn't have to be.
-     * Under the hood, the PageParserFactory creates pageParserImpl's,
-     * but the clients are coding against the PageParser interface. */
+ *//*
 
-    /**
-     * Returns a {@link PageParser} that parses the given {@link url}.
-     */
+public interface PageParserFactory {
+    */
+/* PageParserFactory is an interface, but it doesn't have to be.
+ * Under the hood, the PageParserFactory creates pageParserImpl's,
+ * but the clients are coding against the PageParser interface. *//*
+
+
+ */
+/**
+ * Returns a {@link PageParser} that parses the given {@link url}.
+ *//*
+
     PageParser get(String url);
 
-    /*
-     * All instantiations of PageParserImpl are managed by PageParserFactory.
-     * Since the PageParserImpl is private to the package, clients can't instantiate it directly with the constructor.
-     * They have to call PageParserFactory.get.
-     */
-}
+    */
+/*
+ * All instantiations of PageParserImpl are managed by PageParserFactory.
+ * Since the PageParserImpl is private to the package, clients can't instantiate it directly with the constructor.
+ * They have to call PageParserFactory.get.
+ *//*
+
+}*/
