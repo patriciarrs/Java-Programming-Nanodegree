@@ -3,7 +3,12 @@ package _3advancedjavaprogrammingtechniques._6introductiontoconcurrentprogrammin
 import java.util.Objects;
 
 public final class Database {
-    private static Database database;
+    /*
+     * The `volatile` keyword ensures that changes to a variable are always visible to all threads.
+     * When a variable is declared as `volatile`, reads and writes go directly to main memory, preventing threads from caching its value locally.
+     * This is important for variables shared between threads, like the `database` instance in your singleton pattern, to avoid seeing stale or inconsistent values.
+     */
+    private static volatile Database database;
 
     private Database() {
     }
@@ -17,6 +22,18 @@ public final class Database {
      */
 
     public static Database getInstance() {
+        /*
+         * This is generally better for performance than synchronizing the entire method or always synchronizing the block,
+         * because it only synchronizes when the instance is actually being created.
+         *
+         * synchronized (Database.class) {
+         *  if (database == null) {
+         *   database = new Database();
+         *   database.connect("/usr/local/data/users.db");
+         *  }
+         * }
+         * will synchronize every time `getInstance()` is called, even after the instance is initialized, which can hurt performance in multi-threaded scenarios.
+         */
         if (database == null) {
             synchronized (Database.class) {
                 if (database == null) {
