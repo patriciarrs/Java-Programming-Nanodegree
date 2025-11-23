@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class ParallelStreamsWithThreadPools {
     ForkJoinPool pool = new ForkJoinPool();
 
-    // ... studentList ...
+    private Collection<Student> studentList;
 
     Future<Map<Year, Long>> graduatingClassSizes = pool.submit(() ->
             studentList.parallelStream()
