@@ -74,9 +74,97 @@ writer.close();
 
 ## Buffered Streams
 
-# Java Object Serialization
+The most common **buffered streams** are *BufferedReader*s and *BufferedWriter*s,
+which read and write lines of text.
+
+When we call *read()*, the *BufferedReader* reads ahead, and fetches more data than asked for.
+
+It is stored in an array (a.k.a., *buffer*).
+
+### BufferedReader
+
+The Files API only returns buffered readers.
+
+The main difference between *BufferedReader* and *Reader* is the *readLine* method,
+which returns a full line of text.
+
+```
+BufferedReader reader = Files.newBufferedReader(Path, Charset);
+reader.readLine();
+reader.close();
+```
+
+### BufferedWriter
+
+*BufferedWriter* also uses an in-memory buffer to store writes,
+and then periodically writes contents of the buffer in batches.
+
+```
+BufferedWriter writer = Files.newBufferedWriter(Path, Charset);
+writer.write("Hello, ");
+writer.write("world!");
+writer.flush();  // Writes the contents of the buffer
+writer.close();  // Flushes the buffer and closes "test"
+```
+
+# Preventing Resource Leaks
+
+## try-catch-finally
+
+The code in the *finally* block is guaranteed to execute after the code in the *try* block,
+even if the *try* block **returns** a value or **throws** an exception.
+
+```
+Writer writer;
+try {
+  writer = Files.newBufferedWriter(Path.of("test"));
+  writer.write("Hello, world!");
+} finally {
+  writer.close();
+}
+```
+
+## try-with-resources
+
+Resources initialized in this way are guaranteed to be closed after the *try* block finishes executing.
+
+```
+try (InputStream in   = Files.newInputStream(Path.of("foo"));
+     OutputStream out = Files.newOutputStream(Path.of("bar"))) {
+  out.write(in.readAllBytes());
+}
+```
+
+# Java Bean
+
+A class representing a custom data type.
+
+It stores each piece of info in an instance field.
+
+Each field has a corresponding getter - *getProperty()* - and setter - *setProperty(property)*.
+
+```
+public class Client {
+  private int id;
+  private String name;
+  private List<String> emails;
+  
+  public int getId() { return id; }
+  public String getName() { return name; }
+  public List<String> getEmails() { return emails; }
+  
+  public void setId(int id) { this.id = id; }
+  public void setName(String name) { this.name = name; }
+  public void setEmails(List<String> emails) { this.emails = emails; }
+}
+```
+
+# Java Object-JSON Serialization
 
 In Java, the most popular library for doing this is **Jackson**.
+
+Jackson uses Java's Reflection APIs to examine the class structure at run time,
+and make serialization/deserialization decisions based on what it finds.
 
 Why would we need to serialize a Java Object?
 
