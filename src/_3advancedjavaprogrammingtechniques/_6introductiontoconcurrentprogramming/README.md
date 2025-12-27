@@ -14,9 +14,7 @@
 
 ![Concurrent Program](concurrent.png "Concurrent Program")
 
-- In the process of working, the program reaches a point where it can't make anymore progress on task 1 (e.g., waiting
-  for
-  a DB connection, waiting for a large file to be downloaded, ...).
+- In the process of working, the program reaches a point where it can't make anymore progress on task 1.
 - It pauses task 1 (saves its progress), and sets it aside to finish later;
   while it's waiting, it starts working on task 2.
 - Task 1 is being processed concurrently with task 2: both tasks are in progress at the same time, even if the server
@@ -35,17 +33,6 @@
 
 # Threads
 
-## Requirements for Using Threads
-
-- **Computer** with a multi-thread CPU.
-- **Operating system** with the required drivers.
-
-## Common Uses of Threads
-
-- Doing **multiple tasks** (e.g., multiple user requests, at the same time).
-- Perform **long-running background** work (e.g., downloading a large file).
-  This allows the main thread to continue doing other things while it waits for the background thread to finish.
-
 ## Program Memory (Stack and Heap)
 
 - Program memory contains:
@@ -60,7 +47,7 @@
 ![Multi-thread Memory](multithread_memory.png "Memory")
 
 - 2 threads can have a reference to the *same object*:
-    - E.g., 2+ threads accessing shared state (e.g., ArrayList, HashMap, ...).
+    - E.g., 2+ threads accessing shared state (e.g., *ArrayList*, *HashMap*, ...).
 - If a thread tries to use more **stack** space than is allocated for it, the **stack** will overflow, an exception will
   be thrown, and the thread will stop running.
 
@@ -75,10 +62,10 @@ thread.start();
 thread.join();
 ```
 
-- When calling the Thread constructor, we pass in an implementation of the runnable interface
+- When calling the *Thread* constructor, we pass in an implementation of the *Runnable* interface
   (a subclass or a lambda).
 
-![Multi-thread Memory](execution.png "Memory")
+![Multi-thread Memory](execution.png "Multi-thread Memory")
 
 1. The **main thread** *creates* a **2nd thread** *without starting* it
 2. The **main thread** prints "Hello, " to the terminal.
@@ -87,14 +74,6 @@ thread.join();
 5. The **main thread** calls the *join* method.
 6. This method *waits* for the **2nd thread** to finish and then *destroys* the **2nd thread**.
 7. "Hello, world!" has been printed to the terminal.
-
-## Virtual Threads
-
-- A Thread in Java, creates a **virtual thread** that's managed by the JVM.
-- With **virtual threads** the program could create 10,000 Threads, even if the computer's CPU only supports 4 threads.
-- **Virtual threads** can create the *illusion* of having multiple threads,
-  but a program will not be able to achieve parallelism unless the computer the program is running on supports real
-  threads managed by the operating system.
 
 # Thread Execution Order
 
@@ -118,7 +97,116 @@ There are 2 possible outcomes:
    Then the **1st thread** prints "Hello, " and the **2nd thread** is *joined* back to the **main thread**.
    The end result printed to the terminal is backwards now.
 
-![Race condition](race.png "Memory")
+![Race condition](race.png "Race condition")
 
 A **Race Condition** is a bug that happens when the correctness of a program
 depends on a particular execution order of parallel threads.
+
+# Thread Pools and Executors
+
+In practice, we won't usually create threads directly: modern multi-threaded Java programs use **thread pools**
+instead.
+
+**Thread pool**: *collection of threads* to execute and manage *asynchronous* work.
+
+![Thread Pool](thread-pool.png "Thread Pool")
+
+**Thread pools** reduce the cost of using threads by storing them in a *worker thread pool*.
+
+## Benefits of Thread Pools
+
+**Thread pools** have advantages over using *Thread* objects directly:
+
+- *Limits the number of threads* used by the program, and prevents the number of threads from growing in an unbounded
+  manner.
+- *Reuses worker threads*, which reduces the time and memory spent creating new threads.
+
+## Creating Thread Pools
+
+In Java, **thread pools** are created using the *Executors* API (it has lots of other options).
+
+- Thread pool with 1 thread:
+
+`ExecutorService pool = Executors.newSingleThreadExecutor();`
+
+Useful in testing situations, or to guarantee that a piece of work does not run on multiple threads.
+___
+
+- Thread pool that reuses threads but does not limit the number of threads it can create:
+
+`ExecutorService pool = Executors.newCachedThreadPool();`
+
+If all the threads in the thread pool are busy, the thread pool will create and add another thread to the pool and use
+that instead.
+___
+
+- Thread pool that reuses threads and limits the number of threads to 12:
+
+`ExecutorService pool = Executors.newFixedThreadPool(12);`
+
+If new work is submitted and all 12 threads are busy doing other work, the new work will have to wait its turn for a
+thread to become available.
+
+## Submitting Asynchronous Work To Thread Pools
+
+**Thread pools** have several methods that let submit work to be executed *asynchronously*:
+
+- *submit*: Submits an implementation of the *Runnable* interface with **no return value**, and returns a *Future*:
+
+`Future<?> print = pool.submit(() -> System.out.println("foo"));`
+___
+
+- *execute*: Submits an implementation of the *Runnable* interface and returns *void*:
+
+`pool.execute(() -> System.out.println("foo"));`
+___
+
+- *submit*: Submits an implementation of the *Callable* interface, whose return value will be accessible via the
+  *Future*:
+
+`Future<Path> pathFuture = pool.submit(() -> downloadFile());`
+
+## Futures
+
+**Future**: a reference to the result of an asynchronous computation.
+
+- Futures are parameterized (calling *get* of a *Future<Map>* returns a *Map*, of a *Future<List>* returns a
+  *List*, ...).
+- Calling *get* on a future returned from a thread pool will cause the program to stop and wait for the parallel thread
+  to finish its computation.
+- So, don't call get until you've started all the asynchronous tasks you want to run in parallel.
+
+## Joining Asynchronous Work
+
+**Joining**: The process of waiting for asynchronous work.
+
+```
+ExecutorService pool = Executors.newFixedThreadPool(2);
+
+Future<?> print = pool.submit(() -> System.out.println("foo"));
+Future<Path> pathFuture = pool.submit(() -> downloadFile());
+
+print.get();
+Path path = pathFuture.get();
+```
+
+1. *print* and *pathFuture* are running in parallel when *print.get()* is called.
+2. *print* doesn't return a value (we can ignore it).
+3. The file download returns a path (we store the path of the downloaded file).
+
+**What if we don't have a Thread or Future to explicitly join?**
+
+```
+CountDownLatch latch = new CountDownLatch(1);
+
+pool.execute(() -> {
+  System.out.println("foo");
+  latch.countDown();
+});
+
+latch.await();
+```
+
+1. We create a *countDownLatch* whose count is equal to the number of asynchronous tasks we need to wait for.
+2. Inside the *Runnable*, we call the *countDown* method (decreases the latches count by 1).
+3. Outside the asynchronous code, we call the *await* method (stops and waits for the countdown latch to reach 0).

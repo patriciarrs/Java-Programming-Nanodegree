@@ -126,7 +126,7 @@ try {
 
 ## try-with-resources
 
-Resources initialized in this way are guaranteed to be closed after the *try* block finishes executing.
+Resources initialized in this way are **guaranteed to be closed** after the *try* block finishes executing.
 
 ```
 try (InputStream in   = Files.newInputStream(Path.of("foo"));
@@ -137,7 +137,7 @@ try (InputStream in   = Files.newInputStream(Path.of("foo"));
 
 # Java Bean
 
-A class representing a custom data type.
+A **class** representing a custom data type.
 
 It stores each piece of info in an instance field.
 
