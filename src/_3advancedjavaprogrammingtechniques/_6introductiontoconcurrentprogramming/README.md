@@ -170,11 +170,11 @@ ___
 
 **Future**: a reference to the result of an asynchronous computation.
 
-- Futures are parameterized (calling *get* of a *Future<Map>* returns a *Map*, of a *Future<List>* returns a
-  *List*, ...).
 - Calling *get* on a future returned from a thread pool will cause the program to stop and wait for the parallel thread
   to finish its computation.
 - So, don't call get until you've started all the asynchronous tasks you want to run in parallel.
+- Futures are parameterized (calling *get* of a *Future<Map>* returns a *Map*, of a *Future<List>* returns a
+  *List*, ...).
 
 ## Joining Asynchronous Work
 
@@ -210,3 +210,84 @@ latch.await();
 1. We create a *countDownLatch* whose count is equal to the number of asynchronous tasks we need to wait for.
 2. Inside the *Runnable*, we call the *countDown* method (decreases the latches count by 1).
 3. Outside the asynchronous code, we call the *await* method (stops and waits for the countdown latch to reach 0).
+
+# ForkJoin Pools
+
+**ForkJoinPool**: specialized kind of thread pool with *advantages* over traditional thread pools:
+
+- Uses **work stealing** so that idle worker threads can find work to do.
+- Optimized for asynchronous work that **creates more work** (*recursive work*).
+
+![Work Stealing](stealing.png "Work Stealing")
+
+"Traditional" thread pools do a fine job of distributing work across the worker threads (work stealing does not have a
+huge impact on performance).
+
+However, work stealing may give an extra efficiency boost (depending on the kind of asynchronous tasks a program
+creates).
+
+## ForkJoinTasks
+
+When we create work to submit to a *ForkJoinPool*, we subclass *RecursiveTask* or *RecursiveAction*.
+
+- **RecursiveTask**: for asynchronous work that returns a value
+- **RecursiveAction**: for asynchronous work that does not return a value.
+
+*RecursiveAction/RecursiveTask* extend *ForkJoinTask*.
+
+![Invoke](invoke.png "Invoke")
+
+- When implementing the *compute()* method of *RecursiveAction/RecursiveTask*, we can submit more work to the thread
+  pool by calling the *invoke()* method (or 1 of its variants).
+- Once we invoke the recursive work, the *RecursiveAction/RecursiveTask* can wait for the results and use them in its
+  own computation, or it can proceed without joining the results.
+- We can also use the "normal" thread pool methods of *submit()* and *execute()*.
+
+```
+public final class WordCounter {
+    public static void main(String[] args) { 
+        ForkJoinPool pool = new ForkJoinPool();
+        long count = pool.invoke(new CountWordsTask(args[0], args[1]));
+    }
+}
+
+public final class CountWordsTask extends RecursiveTask<Long> {
+    private final Path path;
+    private final String word;
+
+    public CountWordsTask(Path path, String word) {
+        this.path = path;
+        this.word = word;
+    }
+
+    @Override
+    protected Long compute() {
+        if (!Files.isDirectory(path)) {
+          try {
+            return Files.readAllLines(file, StandardCharsets.UTF_8)
+                        .stream()
+                        .flatMap(l -> Arrays.stream(l.split(" ")))
+                        .filter(word::equalsIgnoreCase)
+                        .count();
+          } catch (...) {...}
+        }
+
+        Stream<Path> subpaths;
+        try {
+            subpaths = Files.list(path);
+        } catch (...) {...}
+
+        List<CountWordsTask> subtasks = subpaths
+                                         .map(path -> 
+                                                 new CountWordsTask(path, word))
+                                         .toList();
+
+        invokeAll(subtasks);
+
+        return subtasks
+                .stream()
+                .mapToLong(CountWordsTask::getRawResult)
+                .sum();
+    }
+}
+```
