@@ -26,7 +26,7 @@ provides characters of text.
 
 That Reader, in turn, is itself using an *InputStream* behind the scenes to read the raw data.
 
-![Reading and Writing Data in Java](data.png "Reading and Writing Data in Java")
+![Reading and Writing Data in Java](images/data.png "Reading and Writing Data in Java")
 
 ## Input & Output Streams
 
@@ -171,4 +171,4 @@ Why would we need to serialize a Java Object?
 - To save its contents to a file.
 - To send it over a network.
 
-![JSON Serialization / Deserialization with Jackson](Jackson.png "JSON Serialization / Deserialization with Jackson")
+![JSON Serialization / Deserialization with Jackson](images/Jackson.png "JSON Serialization / Deserialization with Jackson")

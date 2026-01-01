@@ -5,14 +5,14 @@
 - Can only work on one task at a time.
 - "You start the laundry machine, and then sit and wait for it to finish before starting the next load."
 
-![Sequential Program](sequential.png "Sequential Program")
+![Sequential Program](images/sequential.png "Sequential Program")
 
 ## Concurrent
 
 - Can have multiple tasks in progress at the same time.
 - "You start the laundry machine. While it's running, you go fold some other clean clothes."
 
-![Concurrent Program](concurrent.png "Concurrent Program")
+![Concurrent Program](images/concurrent.png "Concurrent Program")
 
 - In the process of working, the program reaches a point where it can't make anymore progress on task 1.
 - It pauses task 1 (saves its progress), and sets it aside to finish later;
@@ -25,7 +25,7 @@
 - Can actively be working on multiple tasks at the same time.
 - "You buy another laundry machine, and then you run two loads of laundry at the same time."
 
-![Parallel Program](parallel.png "Parallel Program")
+![Parallel Program](images/parallel.png "Parallel Program")
 
 - Parallel programs are concurrent too:
     - At a point in time, tasks 1, 2, and 3, are all being processed concurrently.
@@ -39,12 +39,12 @@
     - **Stack** - contains variables and primitive values.
     - **Heap** - contains objects.
 
-![Memory](memory.png "Memory")
+![Memory](images/memory.png "Memory")
 
 - When a program creates new threads, it allocates a separate **stack** for each thread.
 - But they all use the same **heap**.
 
-![Multi-thread Memory](multithread_memory.png "Memory")
+![Multi-thread Memory](images/multithread_memory.png "Memory")
 
 - 2 threads can have a reference to the *same object*:
     - E.g., 2+ threads accessing shared state (e.g., *ArrayList*, *HashMap*, ...).
@@ -65,7 +65,7 @@ thread.join();
 - When calling the *Thread* constructor, we pass in an implementation of the *Runnable* interface
   (a subclass or a lambda).
 
-![Multi-thread Memory](execution.png "Multi-thread Memory")
+![Multi-thread Memory](images/execution.png "Multi-thread Memory")
 
 1. The **main thread** *creates* a **2nd thread** *without starting* it
 2. The **main thread** prints "Hello, " to the terminal.
@@ -97,7 +97,7 @@ There are 2 possible outcomes:
    Then the **1st thread** prints "Hello, " and the **2nd thread** is *joined* back to the **main thread**.
    The end result printed to the terminal is backwards now.
 
-![Race condition](race.png "Race condition")
+![Race condition](images/race.png "Race condition")
 
 A **Race Condition** is a bug that happens when the correctness of a program
 depends on a particular execution order of parallel threads.
@@ -109,7 +109,7 @@ instead.
 
 **Thread pool**: *collection of threads* to execute and manage *asynchronous* work.
 
-![Thread Pool](thread-pool.png "Thread Pool")
+![Thread Pool](images/thread-pool.png "Thread Pool")
 
 **Thread pools** reduce the cost of using threads by storing them in a *worker thread pool*.
 
@@ -218,7 +218,7 @@ latch.await();
 - Uses **work stealing** so that idle worker threads can find work to do.
 - Optimized for asynchronous work that **creates more work** (*recursive work*).
 
-![Work Stealing](stealing.png "Work Stealing")
+![Work Stealing](images/stealing.png "Work Stealing")
 
 "Traditional" thread pools do a fine job of distributing work across the worker threads (work stealing does not have a
 huge impact on performance).
@@ -235,7 +235,7 @@ When we create work to submit to a *ForkJoinPool*, we subclass *RecursiveTask* o
 
 *RecursiveAction/RecursiveTask* extend *ForkJoinTask*.
 
-![Invoke](invoke.png "Invoke")
+![Invoke](images/invoke.png "Invoke")
 
 - When implementing the *compute()* method of *RecursiveAction/RecursiveTask*, we can submit more work to the thread
   pool by calling the *invoke()* method (or 1 of its variants).
