@@ -43,7 +43,7 @@ When would we need to write code that directly uses *InputStream*s and *OutputSt
 
 - When there's a need to access low level bytes of dta, like implementing a custom network protocol or file format.
 
-```
+```java
 InputStream in = Files.newInputStream(Path, StandardOpenOptions);
 OutputStream out = Files.newOutputStream(Path, StandardOpenOptions);
 in.read(byte[]);
@@ -60,13 +60,13 @@ Readers and Writers are the next level of abstraction built on top of input and 
 
 These interfaces read and write text characters.
 
-```
+```java
 Reader reader = Files.newBufferedReader(Path, Charset);
-reader.read(char[])
+reader.read(char[]);
 reader.close();
 ```
 
-```
+```java
 Writer writer = Files.newBufferedWriter(Path, Charset);
 writer.write("test");
 writer.close();
@@ -88,7 +88,7 @@ The Files API only returns buffered readers.
 The main difference between *BufferedReader* and *Reader* is the *readLine* method,
 which returns a full line of text.
 
-```
+```java
 BufferedReader reader = Files.newBufferedReader(Path, Charset);
 reader.readLine();
 reader.close();
@@ -99,7 +99,7 @@ reader.close();
 *BufferedWriter* also uses an in-memory buffer to store writes,
 and then periodically writes contents of the buffer in batches.
 
-```
+```java
 BufferedWriter writer = Files.newBufferedWriter(Path, Charset);
 writer.write("Hello, ");
 writer.write("world!");
@@ -114,13 +114,13 @@ writer.close();  // Flushes the buffer and closes "test"
 The code in the *finally* block is guaranteed to execute after the code in the *try* block,
 even if the *try* block **returns** a value or **throws** an exception.
 
-```
+```java
 Writer writer;
 try {
-  writer = Files.newBufferedWriter(Path.of("test"));
-  writer.write("Hello, world!");
+    writer =Files.newBufferedWriter(Path.of("test"));
+    writer.write("Hello, world!");
 } finally {
-  writer.close();
+    writer.close();
 }
 ```
 
@@ -128,10 +128,10 @@ try {
 
 Resources initialized in this way are **guaranteed to be closed** after the *try* block finishes executing.
 
-```
-try (InputStream in   = Files.newInputStream(Path.of("foo"));
+```java
+try (InputStream in = Files.newInputStream(Path.of("foo"));
      OutputStream out = Files.newOutputStream(Path.of("bar"))) {
-  out.write(in.readAllBytes());
+    out.write(in.readAllBytes());
 }
 ```
 
@@ -143,19 +143,31 @@ It stores each piece of info in an instance field.
 
 Each field has a corresponding getter - *getProperty()* - and setter - *setProperty(property)*.
 
-```
+```java
 public class Client {
-  private int id;
-  private String name;
-  private List<String> emails;
-  
-  public int getId() { return id; }
-  public String getName() { return name; }
-  public List<String> getEmails() { return emails; }
-  
-  public void setId(int id) { this.id = id; }
-  public void setName(String name) { this.name = name; }
-  public void setEmails(List<String> emails) { this.emails = emails; }
+    private int id;
+    private String name;
+    private List<String> emails;
+
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public List<String> getEmails() {
+        return emails;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setEmails(List<String> emails) {
+        this.emails = emails;
+    }
 }
 ```
 

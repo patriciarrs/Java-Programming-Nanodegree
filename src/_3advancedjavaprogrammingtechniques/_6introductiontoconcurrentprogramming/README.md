@@ -53,7 +53,7 @@
 
 ## Creating and Running Threads
 
-```
+```java
 Thread thread = new Thread(() -> System.out.print("world!"));
 
 System.out.print("Hello, ");
@@ -80,7 +80,7 @@ thread.join();
 When we have a bunch of threads running at the same time, they execute in seemingly random order
 because threads are run by the **operating system's thread scheduler**.
 
-```
+```java
 Thread thread = new Thread(() -> System.out.print("world!"));
 thread.start();
 
@@ -180,13 +180,14 @@ ___
 
 **Joining**: The process of waiting for asynchronous work.
 
-```
+```java
 ExecutorService pool = Executors.newFixedThreadPool(2);
 
 Future<?> print = pool.submit(() -> System.out.println("foo"));
 Future<Path> pathFuture = pool.submit(() -> downloadFile());
 
 print.get();
+
 Path path = pathFuture.get();
 ```
 
@@ -196,15 +197,15 @@ Path path = pathFuture.get();
 
 **What if we don't have a Thread or Future to explicitly join?**
 
-```
+```java
 CountDownLatch latch = new CountDownLatch(1);
 
 pool.execute(() -> {
-  System.out.println("foo");
-  latch.countDown();
+    System.out.println("foo");
+    latch.countDown();
 });
 
-latch.await();
+    latch.await();
 ```
 
 1. We create a *countDownLatch* whose count is equal to the number of asynchronous tasks we need to wait for.
@@ -243,9 +244,9 @@ When we create work to submit to a *ForkJoinPool*, we subclass *RecursiveTask* o
   own computation, or it can proceed without joining the results.
 - We can also use the "normal" thread pool methods of *submit()* and *execute()*.
 
-```
+```java 
 public final class WordCounter {
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
         ForkJoinPool pool = new ForkJoinPool();
         long count = pool.invoke(new CountWordsTask(args[0], args[1]));
     }
@@ -263,24 +264,29 @@ public final class CountWordsTask extends RecursiveTask<Long> {
     @Override
     protected Long compute() {
         if (!Files.isDirectory(path)) {
-          try {
-            return Files.readAllLines(file, StandardCharsets.UTF_8)
+            try {
+                return Files.readAllLines(file, StandardCharsets.UTF_8)
                         .stream()
                         .flatMap(l -> Arrays.stream(l.split(" ")))
                         .filter(word::equalsIgnoreCase)
                         .count();
-          } catch (...) {...}
+            } catch (/*...*/) {
+                //...
+            }
+          }
         }
 
         Stream<Path> subpaths;
         try {
             subpaths = Files.list(path);
-        } catch (...) {...}
+        } catch (/*...*/) {
+          // ...
+        }
 
         List<CountWordsTask> subtasks = subpaths
-                                         .map(path -> 
-                                                 new CountWordsTask(path, word))
-                                         .toList();
+                .map(path ->
+                        new CountWordsTask(path, word))
+                .toList();
 
         invokeAll(subtasks);
 
