@@ -5,9 +5,7 @@ import java.util.concurrent.*;
 
 /*
  * ConcurrentHashMap has low-level optimizations that make it ideal for multithreaded access.
- *
  * For example, when two threads try to add entries to the map at the same time.
- *
  * Under the right circumstances ConcurrentHashMap may determine that the writes are non-conflicting,
  * and will allow them both to happen at the same time.
  *
@@ -16,7 +14,6 @@ import java.util.concurrent.*;
  */
 public final class ConcurrentHashMapVotingApp {
     public static void main(String[] args) throws Exception {
-
         ExecutorService executor = Executors.newFixedThreadPool(12);
 
         Map<String, Integer> votes = new ConcurrentHashMap<>();

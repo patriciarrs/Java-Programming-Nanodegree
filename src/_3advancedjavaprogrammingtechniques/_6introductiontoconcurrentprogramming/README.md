@@ -1,3 +1,28 @@
+# Index
+
+- [Sequential vs Concurrent vs Parallel Programs](#sequential-vs-concurrent-vs-parallel-programs)
+    - [Sequential](#sequential)
+    - [Concurrent](#concurrent)
+    - [Parallel](#parallel)
+
+- [Threads](#threads)
+    - [Program Memory (Stack and Heap)](#program-memory-stack-and-heap)
+    - [Creating and Running Threads](#creating-and-running-threads)
+
+- [Thread Execution Order](#thread-execution-order)
+
+- [Thread Pools and Executors](#thread-pools-and-executors)
+    - [Benefits of Thread Pools](#benefits-of-thread-pools)
+    - [Creating Thread Pools](#creating-thread-pools)
+    - [Submitting Asynchronous Work To Thread Pools](#submitting-asynchronous-work-to-thread-pools)
+    - [Futures](#futures)
+    - [Joining Asynchronous Work](#joining-asynchronous-work)
+
+- [ForkJoin Pools](#forkjoin-pools)
+    - [ForkJoinTasks](#forkjointasks)
+
+- [Synchronization](#synchronization)
+
 # Sequential vs Concurrent vs Parallel Programs
 
 ## Sequential
@@ -83,7 +108,6 @@ because threads are run by the **operating system's thread scheduler**.
 ```java
 Thread thread = new Thread(() -> System.out.print("world!"));
 thread.start();
-
 System.out.print("Hello, ");
 
 thread.join();
@@ -273,27 +297,64 @@ public final class CountWordsTask extends RecursiveTask<Long> {
             } catch (/*...*/) {
                 //...
             }
-          }
         }
-
-        Stream<Path> subpaths;
-        try {
-            subpaths = Files.list(path);
-        } catch (/*...*/) {
-          // ...
-        }
-
-        List<CountWordsTask> subtasks = subpaths
-                .map(path ->
-                        new CountWordsTask(path, word))
-                .toList();
-
-        invokeAll(subtasks);
-
-        return subtasks
-                .stream()
-                .mapToLong(CountWordsTask::getRawResult)
-                .sum();
     }
+
+    Stream<Path> subpaths;
+    try {
+        subpaths = Files.list(path);
+    } catch(/*...*/) {
+        // ...
+    }
+
+    List<CountWordsTask> subtasks = subpaths.map(path -> new CountWordsTask(path, word)).toList();
+
+    invokeAll(subtasks);
+
+    return subtasks.stream().mapToLong(CountWordsTask::getRawResult).sum();
 }
 ```
+
+# Synchronization
+
+Process of limiting the number of threads that can access a shared resource at the same time (in the context of
+multi-threaded programming).
+
+*As seen previously, it's possible for multiple threads to access shared state (e.g., a List / Map stored in the heap)
+or a shared resource (e.g., a file).*
+
+- If all the threads are just reading the shared resource, that's okay without synchronization (a.k.a., read-only access
+  to the shared resource).
+- If at least one of the threads is updating / writing to the shared resource, synchronization may be required.
+
+## Ways to Synchronize
+
+1. **Synchronized collection wrappers**:
+
+- `Map<String, Integer> votes = Collections.synchronizedMap(new HashMap<>());`
+- Others: `synchronizedSet`, `synchronizedList`, ...
+
+![Synchronized collection wrappers](images/wrappers.png "Synchronized collection wrappers")
+
+- `HashMap.computeIfPresent()`consists of 2 steps.
+- Synchronization prevents those steps from splitting up across threads.
+
+
+2. Data structures **designed for concurrency** (`java.util.concurrent`):
+
+- `Map<String, Integer> votes = new ConcurrentHashMap<>();`
+
+![Data structures designed for concurrency](images/data_structure.png "Data structures designed for concurrency")
+
+- `ConcurrentHashMap.computeIfPresent()` is a single operation - it cannot be slit up across threads.
+- `ConcurrentHashMap` has low-level optimizations that make it ideal for multithreaded access. For example, when 2
+  threads try to add entries to the map at the same time. Under the right circumstances it may determine that the writes
+  are non-conflicting, and will allow them both to happen at the same time.
+
+## Atomic Operation
+
+Operation that is executed as a *single step*, and cannot be split into smaller steps.
+
+- If an operation is atomic, that means we don't have to worry about synchronizing it across different threads.
+- `ConcurrentHashMap.compute()` is an atomic operation.
+- Individually calling `ConcurrentHashMap.get()` and `ConcurrentHashMap.put()` is not atomic.

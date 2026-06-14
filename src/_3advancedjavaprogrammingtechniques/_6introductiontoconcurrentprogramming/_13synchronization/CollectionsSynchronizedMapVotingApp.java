@@ -5,7 +5,6 @@ import java.util.concurrent.*;
 
 public final class CollectionsSynchronizedMapVotingApp {
     public static void main(String[] args) throws Exception {
-
         ExecutorService executor = Executors.newFixedThreadPool(12);
 
         Map<String, Integer> votes = Collections.synchronizedMap(new HashMap<>());
