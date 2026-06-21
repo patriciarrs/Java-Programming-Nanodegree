@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._3dependencymanagementwithmaven.xml;
+package _4javaapplicationdeployment._3dependencymanagementwithmaven._5xml;
 
 public class Car {
     private String name;
