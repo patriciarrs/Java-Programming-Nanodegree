@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._6moduletypes.modules.com.udacity.packagesearch.com.udacity.packagesearch.search.service;
+package com.udacity.packagesearch.search.service;
 
 import com.udacity.flight.model.Flight;
 import com.udacity.flight.search.FlightSearchService;

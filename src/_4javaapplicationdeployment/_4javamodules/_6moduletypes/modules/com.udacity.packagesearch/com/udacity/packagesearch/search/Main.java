@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._6moduletypes.modules.com.udacity.packagesearch.com.udacity.packagesearch.search;
+package com.udacity.packagesearch.search;
 
 import com.udacity.hotel.model.Reservation;
 import com.udacity.packagesearch.search.model.PackageSearch;
@@ -23,7 +23,6 @@ public class Main {
 
 		System.out.printf("Found %d available rooms%n", availableRooms.size());
 
-/* Uncomment this code on part 4
 		Optional<Reservation> first = availableRooms.stream().findFirst();
 
 		if (first.isPresent()) {
@@ -37,6 +36,6 @@ public class Main {
 
 			System.out.println(managersName);
 		}
-*/
+
 	}
 }

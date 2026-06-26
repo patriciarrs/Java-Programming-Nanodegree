@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._6moduletypes.modules.com.udacity.flight.com.udacity.flight.model;
+package com.udacity.flight.model;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;

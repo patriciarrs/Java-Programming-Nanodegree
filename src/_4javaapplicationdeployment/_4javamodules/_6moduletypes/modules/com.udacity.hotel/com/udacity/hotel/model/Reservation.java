@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._6moduletypes.modules.com.udacity.hotel.com.udacity.hotel.model;
+package com.udacity.hotel.model;
 
 import java.time.LocalDate;
 import java.util.Objects;

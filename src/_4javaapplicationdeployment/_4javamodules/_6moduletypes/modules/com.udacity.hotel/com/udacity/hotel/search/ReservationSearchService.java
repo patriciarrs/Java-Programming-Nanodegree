@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._6moduletypes.modules.com.udacity.hotel.com.udacity.hotel.search;
+package com.udacity.hotel.search;
 
 import com.udacity.hotel.model.Reservation;
 
