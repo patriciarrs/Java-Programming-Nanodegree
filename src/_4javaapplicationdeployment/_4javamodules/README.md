@@ -130,3 +130,42 @@ module mymodule {
 | Opens      | In `module-info`    | n/a                   | Everything                    |
 | Requires   | In `module-info`    | n/a                   | Everything                    |
 | Can Access | Named and Automatic | Unnamed and Automatic | Named, Unnamed, and Automatic |
+
+# Java Linker
+
+To run a Java app, we need 1 of these:
+- have Java installed;
+- an installer for the app that bundles the entire JRE with the app.
+
+**JLink**: tool that allows us to create a custom Java Runtime Environment containing the minimal components necessary to run a specific Java module.
+- This is possible because module descriptors contain specific information about package requirements and the core JDK libraries are all stored in modular form.
+
+1. Compile all classes and build them into a jar.
+- `mvn package`
+
+2. Create a new jar called `Example.jar` with a main class in `com.udacity.jpnd.App` that's using the classes from the `target/classes` directory.
+- `jar -cfe Example.jar com.udacity.jpnd.App -C target/classes .`
+
+3. See the output of the program.
+- `java -jar Example.jar`
+
+4. Analyze Dependencies - make sure that all dependencies can be resolved.
+- `jdeps Example.jar`
+- This shows all the dependencies required by the program and where they are located.
+- If the program has additional dependencies, we can use jdeps to determine whether we need to manually include additional packages in the jar.
+
+5. Building Runtime - put all the required modules on the modulepath (for example, the module for our program + `java.base`);
+
+- `--module-path` (x2) - places 2 directories on the module path:
+  - 1 - `$JAVA_HOME/jmods` (contains all the modules for the JDK bundled into jmod files);
+  - 2 - `target/classes` (class files for a program);
+- `--add-modules` - `com.udacity.jpnd.moduletest` (module to add to our JRE);
+- `--output` - `tinyJRE` (output directory);
+
+> `jlink --module-path "$JAVA_HOME/jmods" --module-path target/classes --add-modules com.udacity.jpnd.moduletest --output tinyJRE`
+
+- The modules comprising the Java Standard Library can be found in the `/jmods` directory of our Java installation.
+
+6. Using the Runtime
+- The tinyJRE directory is less than 40 MB and contains a complete Java Runtime that can run our program.
+- `tinyJRE/bin/java -jar Example.jar`
