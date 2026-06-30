@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._9javalinker.gcd.src.main.java.com.udacity.gcd;
+package com.udacity.gcd;
 
 import java.math.BigInteger;
 
