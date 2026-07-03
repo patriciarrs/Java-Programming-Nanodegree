@@ -98,14 +98,12 @@ Maven will create a new project directory with a `pom.xml` some starter source c
 
 ![Maven Standard Directory Layout](images/maven-standard-directory-layout2.png "Maven Standard Directory Layout")
 
-
-
 ## Dependencies
 
 - **Dependency** - External Java source (often a JAR) that is not part of the program and not part of the Java standard library. 
 
 Maven:
-- Checks to see if the local repository (`/user/.m2/repository`) already has the resource we need
+- Checks to see if the local repository (`~/.m2/repository`) already has the resource we need
   - If it does not, it downloads the JAR from the Central Repository.
 - Stores a single copy of each dependency in its local repository;
 - Includes them as part of the project build;
@@ -206,6 +204,54 @@ Maven:
         <!-- Include this dependency as a JAR.
         Unnecessary (JAR is the default), but necessary if it came as a different kind of package -->
         <type>jar</type>
+    </dependency>
+</dependencies>
+</project>
+```
+
+
+### Transitive
+
+**Transitive dependency** - resource required by one of the dependencies included in your project.
+
+
+![JUnit is a Transitive Dependency of MyProject](images/transitive-dependency.jpg "JUnit is a Transitive Dependency of MyProject")
+
+- JUnit is a Transitive Dependency of this project. 
+- If the project has multiple transitive dependencies:
+  - all at the same depth - 1st declared in the POM wins (in the image above is the JUnit version from Mockito);
+  - nested - shallowest depth wins (in the image below is the JUnit version from Guava).
+
+![Multiple Transitive Dependencies](images/transitive-dependency-2.jpg "Multiple Transitive Dependencies")
+
+To resolve transitive dependency confusion, there are 2 options:
+- Directly include the dependency in question (that version becomes the nearest definition and wins).
+- Use the `<exclusion>` tag to specifically exclude versions we do not wish to use.
+
+> This example will exclude the version of JUnit from Mockito, resulting in an included version from Guava.
+```xml
+<project>
+  <modelVersion> 4.0.0 </modelVersion>
+
+  <groupId> com.udacity.jpnd </groupId>
+  <artifactId> maven-test </artifactId>
+  <version> 1.0.0 </version>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
 </dependencies>
 </project>
