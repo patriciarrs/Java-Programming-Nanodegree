@@ -8,7 +8,7 @@
 - A phase processes the **goals** (actions) attached to it.
     - The implementation of the goal is performed by a **plugin**.
 
-**Default phases:**
+**Default main phases:**
 
 1. **Validate** - validate that the project definition (pom.xml) has a valid syntax and all the resources can be
    identified.
@@ -341,6 +341,7 @@ Now, when we run `mvn package`, both projects will be built.
     </dependencies>
 </project>
 ```
+
 ### Create a multi-module maven project from scratch
 
 1. `mvn archetype:generate` -> pom-root -> fill all the details.
@@ -351,7 +352,113 @@ Now, when we run `mvn package`, both projects will be built.
 
 We can also use IntelliJ wizard or do this manually.
 
-
-
 # Plugins
+
+> All Maven goals are performed by plugins.
+
+Default plugin bindings for each phase in JAR projects (`<groupId>:<pluginArtifactId>:<version>:<goal>`):
+
+1. **validate**
+2. **process-resources** - org.apache.maven.plugins:maven-resources-plugin:2.6:resources
+3. **compile** - org.apache.maven.plugins:maven-compiler-plugin:3.1:compile
+4. **process-test-resources** - org.apache.maven.plugins:maven-resources-plugin:2.6:testResources
+5. **test-compile** - org.apache.maven.plugins:maven-compiler-plugin:3.1:testCompile
+6. **test** - org.apache.maven.plugins:maven-surefire-plugin:2.12.4:test
+7. **package** - org.apache.maven.plugins:maven-jar-plugin:2.4:jar
+8. **install** - org.apache.maven.plugins:maven-install-plugin:2.4:install
+9. **deploy** - org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy
+
+```xml
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>UserService</module>
+        <module>SalesService</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- <build> includes properties that affect the execution of Maven goals -->
+    <build>
+        <!-- Specify which plugins to use for our project or override the properties of the default plugins -->
+        <plugins>
+            <plugin>
+                <!-- Customization for this project only -->
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <!-- Customization for all projects that inherit this as well -->
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
+```
+
+## Customizing
+
+```xml
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+    </modules>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- When the groupId is org.apache.maven.plugin, we don't need to include it because that is the default -->
+                <groupId>com.udacity.jpnd</groupId>
+                <artifactId>my-blockcahin-plugin</artifactId>
+
+                <executions>
+                    <!-- <execution> binds a plugin goal to a phase -->
+                    <execution>
+                        <phase>test</phase>
+
+                        <goals>
+                            <goal>do-blockchain</goal>
+                        </goals>
+
+                        <!-- <configuration> allows us to pass additional properties to plugins -->
+                        <configuration>
+                            <bitcoins>all</bitcoins>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        
+        <pluginManagement>
+        </pluginManagement>
+    </build>
+</project>
+```
+
+
+# Properties
 
