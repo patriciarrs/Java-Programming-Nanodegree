@@ -5,16 +5,18 @@
 # Build Lifecycle Phases
 
 - Maven organizes the build process into **phases** (steps of the build).
-- A phase processes the **goals** (actions) attached to it. 
-  - The implementation of the goal is performed by a **plugin**.
+- A phase processes the **goals** (actions) attached to it.
+    - The implementation of the goal is performed by a **plugin**.
 
 **Default phases:**
 
-1. **Validate** - validate that the project definition (pom.xml) has a valid syntax and all the resources can be identified.
+1. **Validate** - validate that the project definition (pom.xml) has a valid syntax and all the resources can be
+   identified.
 2. **Compile** - compile the program into class files.
 3. **Test** - run unit tests (don't require code to be packaged or deployed).
 4. **Package** - package the code into a JAR + run integration tests.
-5. **Install** - move the JAR to the local copy of our Maven repo (It's where Maven stores all JARs referenced by our projects).
+5. **Install** - move the JAR to the local copy of our Maven repo (It's where Maven stores all JARs referenced by our
+   projects).
 6. **Deploy** - copy the JAR into a remote repository (to be shared with others).
 
 > Executing a phase will run all the preceding phases.
@@ -28,22 +30,23 @@
 **Minimal POM:**
 
 ```xml
-<project>
-  <!-- Current object model (format) version to be used with Maven-->
-  <modelVersion> 4.0.0 </modelVersion>
 
-  <!-- Group identifier of the project -->
-  <groupId> com.udacity.jpnd </groupId>
-  <!-- Specific identifier of the project -->
-  <artifactId> maven-test </artifactId>
-  <!-- Version of the artifact (keeps track of project versions) -->
-  <version> 1.0.0 </version> 
+<project>
+    <!-- Current object model (format) version to be used with Maven-->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Group identifier of the project -->
+    <groupId>com.udacity.jpnd</groupId>
+    <!-- Specific identifier of the project -->
+    <artifactId>maven-test</artifactId>
+    <!-- Version of the artifact (keeps track of project versions) -->
+    <version>1.0.0</version>
 </project>
 ```
 
 - `groupId`
-  - can be shared with other projects;
-  - uses reverse domain notation (~ Java packages).
+    - can be shared with other projects;
+    - uses reverse domain notation (~ Java packages).
 
 > `groupId` + `artifactId` → uniquely identifies the project
 
@@ -68,12 +71,14 @@ Maven will create a new project directory with a `pom.xml` some starter source c
 ### IntelliJ
 
 1. File > New > Project
-2. Maven Archetype 
+2. Maven Archetype
+
 - Archetype: choose from list `maven-archetype-quickstart`
 - Advanced Settings:
-  - GroupId
-  - ArtifactId
-  - Version
+    - GroupId
+    - ArtifactId
+    - Version
+
 3. Create
 
 ## Standard Directory Layout
@@ -85,12 +90,12 @@ Maven will create a new project directory with a `pom.xml` some starter source c
 
 ---
 
-- `Java`: `.Java` source files. 
+- `Java`: `.Java` source files.
 - `main/resources`: Non-Java files related to running and building the project:
-  - Images;
-  - I18n files;
-  - Local environment config;
-  - Any other files used by the application  (commonly properties files).
+    - Images;
+    - I18n files;
+    - Local environment config;
+    - Any other files used by the application  (commonly properties files).
 - `test/resources`: Configuration files specific to unit testing.
 - `filters`: Property files with values to inject into other resources (using variable name substitution).
 
@@ -100,11 +105,13 @@ Maven will create a new project directory with a `pom.xml` some starter source c
 
 ## Dependencies
 
-- **Dependency** - External Java source (often a JAR) that is not part of the program and not part of the Java standard library. 
+- **Dependency** - External Java source (often a JAR) that is not part of the program and not part of the Java standard
+  library.
 
 Maven:
+
 - Checks to see if the local repository (`~/.m2/repository`) already has the resource we need
-  - If it does not, it downloads the JAR from the Central Repository.
+    - If it does not, it downloads the JAR from the Central Repository.
 - Stores a single copy of each dependency in its local repository;
 - Includes them as part of the project build;
 - Adds them to the build path when necessary.
@@ -115,20 +122,21 @@ Maven:
 - If the version is not specified, it will use the newest version in the repository.
 
 ```xml
-<project>
-  <modelVersion> 4.0.0 </modelVersion>
 
-  <groupId> com.udacity.jpnd </groupId>
-  <artifactId> maven-test </artifactId>
-  <version> 1.0.0 </version>
-  
-  <dependencies>
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>5.7.0</version>
-    </dependency>
-</dependencies>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test</artifactId>
+    <version>1.0.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+    </dependencies>
 </project>
 ```
 
@@ -137,35 +145,37 @@ Maven:
 > The `scope` element of a dependency tells Maven when to include that dependency.
 
 - **Compile** - Available for all Maven actions.
-  - Default.
-  - Most used.
+    - Default.
+    - Most used.
 - **Test** - Only available when building and running unit tests.
 - **Runtime** - Only available when application runs (not when compiled).
-  - Infrequently used.
-  - Some examples of this might be JDBC drivers or logging endpoints (could be utilized by other dependencies).
+    - Infrequently used.
+    - Some examples of this might be JDBC drivers or logging endpoints (could be utilized by other dependencies).
 - **Provided** - Only available during compilation (not when run).
-  - Sometimes used for dependencies that are provided by web application servers during runtime (Servlets APIs).
-  - The web app server is not available during compilation, so Maven includes the dependency during the compile step.
-  - But when the application is executed, we are expecting our web server to provide the dependency, and so Maven does not include it.
+    - Sometimes used for dependencies that are provided by web application servers during runtime (Servlets APIs).
+    - The web app server is not available during compilation, so Maven includes the dependency during the compile step.
+    - But when the application is executed, we are expecting our web server to provide the dependency, and so Maven does
+      not include it.
 - **Import** - Import all dependencies from another POM.
-  - Almost never used.
+    - Almost never used.
 
 ```xml
-<project>
-  <modelVersion> 4.0.0 </modelVersion>
 
-  <groupId> com.udacity.jpnd </groupId>
-  <artifactId> maven-test </artifactId>
-  <version> 1.0.0 </version>
-  
-  <dependencies>
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>5.7.0</version>
-        <scope>test</scope>
-    </dependency>
-</dependencies>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test</artifactId>
+    <version>1.0.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
 ```
 
@@ -173,7 +183,7 @@ Maven:
 
 > The `type` element tells Maven what type of artifact is provided by a dependency.
 
-> The value for this element should correspond to the type provided by the `packaging` element in that dependency's POM. 
+> The value for this element should correspond to the type provided by the `packaging` element in that dependency's POM.
 
 - **jar** - default Java archive.
 - **war** - web archive.
@@ -181,78 +191,167 @@ Maven:
 - **rar** - resource adapter (used by Enterprise Java applications to enable access to foreign systems).
 - **maven-plugin** - package a project to be used as a maven plugin.
 - **pom** - the POM of the project is the primary artifact to produce.
-  - parent projects containing multiple modules
-  - projects that we wish to include using 'import' scope dependencies.
-
+    - parent projects containing multiple modules
+    - projects that we wish to include using 'import' scope dependencies.
 
 ```xml
-<project>
-  <modelVersion> 4.0.0 </modelVersion>
 
-  <groupId> com.udacity.jpnd </groupId>
-  <artifactId> maven-test </artifactId>
-  <version> 1.0.0 </version>
-  <!-- Unnecessary (JAR is the default), but necessary if we wanted to use another packaging type -->
-  <packaging>jar</packaging>
-  
-  <dependencies>
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>5.7.0</version>
-        <scope>test</scope>
-        <!-- Include this dependency as a JAR.
-        Unnecessary (JAR is the default), but necessary if it came as a different kind of package -->
-        <type>jar</type>
-    </dependency>
-</dependencies>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test</artifactId>
+    <version>1.0.0</version>
+    <!-- Unnecessary (JAR is the default), but necessary if we wanted to use another packaging type -->
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+            <!-- Include this dependency as a JAR.
+            Unnecessary (JAR is the default), but necessary if it came as a different kind of package -->
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 </project>
 ```
-
 
 ### Transitive
 
 **Transitive dependency** - resource required by one of the dependencies included in your project.
 
-
 ![JUnit is a Transitive Dependency of MyProject](images/transitive-dependency.jpg "JUnit is a Transitive Dependency of MyProject")
 
-- JUnit is a Transitive Dependency of this project. 
+- JUnit is a Transitive Dependency of this project.
 - If the project has multiple transitive dependencies:
-  - all at the same depth - 1st declared in the POM wins (in the image above is the JUnit version from Mockito);
-  - nested - shallowest depth wins (in the image below is the JUnit version from Guava).
+    - all at the same depth - 1st declared in the POM wins (in the image above is the JUnit version from Mockito);
+    - nested - shallowest depth wins (in the image below is the JUnit version from Guava).
 
 ![Multiple Transitive Dependencies](images/transitive-dependency-2.jpg "Multiple Transitive Dependencies")
 
 To resolve transitive dependency confusion, there are 2 options:
+
 - Directly include the dependency in question (that version becomes the nearest definition and wins).
 - Use the `<exclusion>` tag to specifically exclude versions we do not wish to use.
 
 > This example will exclude the version of JUnit from Mockito, resulting in an included version from Guava.
+
 ```xml
+
 <project>
-  <modelVersion> 4.0.0 </modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId> com.udacity.jpnd </groupId>
-  <artifactId> maven-test </artifactId>
-  <version> 1.0.0 </version>
-  
-  <dependencies>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test</artifactId>
+    <version>1.0.0</version>
 
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
-</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.jupiter</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+    </dependencies>
 </project>
 ```
+
+## Inheritance
+
+All POMs in Maven inherit from the [**Super POM**](https://maven.apache.org/pom.html#the-super-pom).
+
+> **Super POM** - contains the default settings used by Maven (we can override them with settings in our POM).
+
+We can define an additional inheritance hierarchy by having a **parent POM** (should specify the `packaging` type pom).
+
+```xml
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+**Child POM** for UserService - inherits dependencies from the parent POM (defined in the `parent` tag), which means we
+don't need to specify JUnit here.
+
+```xml
+
+<project>
+    <parent>
+        <groupId>com.udacity.jpnd</groupId>
+        <artifactId>maven-test-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>UserService</artifactId>
+    <version>1.0.0</version>
+</project>
+```
+
+## Multiple Modules
+
+What if we wanted to make a single project that would build both our UserService and SalesService artifacts at the same
+time?
+
+We can use the `modules` tag in the **parent POM** that lists both services as **Modules**.
+
+Now, when we run `mvn package`, both projects will be built.
+
+```xml
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>UserService</module>
+        <module>SalesService</module>
+    </modules>
+
+    <dependencies>
+    </dependencies>
+</project>
+```
+### Create a multi-module maven project from scratch
+
+1. `mvn archetype:generate` -> pom-root -> fill all the details.
+2. `cd` to the new directory.
+3. `mvn archetype:generate` -> accept the default -> fill all the details.
+4. The parent pom will be updated to include `modules`.
+5. Repeat the process for all the child projects.
+
+We can also use IntelliJ wizard or do this manually.
+
+
+
+# Plugins
+
