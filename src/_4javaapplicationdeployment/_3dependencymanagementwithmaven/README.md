@@ -194,7 +194,7 @@ Maven:
   <groupId> com.udacity.jpnd </groupId>
   <artifactId> maven-test </artifactId>
   <version> 1.0.0 </version>
-  
+  <!-- Unnecessary (JAR is the default), but necessary if we wanted to use another packaging type -->
   <packaging>jar</packaging>
   
   <dependencies>
@@ -204,7 +204,7 @@ Maven:
         <version>5.7.0</version>
         <scope>test</scope>
         <!-- Include this dependency as a JAR.
-        Unnecessary (JAR is the default), but necessary if it came as a different kind of package. -->
+        Unnecessary (JAR is the default), but necessary if it came as a different kind of package -->
         <type>jar</type>
     </dependency>
 </dependencies>
