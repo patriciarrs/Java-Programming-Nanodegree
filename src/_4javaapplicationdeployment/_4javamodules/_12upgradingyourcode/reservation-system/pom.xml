@@ -16,6 +16,11 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <modules>
+        <module>flightmodule</module>
+        <module>hotelmodule</module>
+        <module>packagemodule</module>
+    </modules>
 
     <build>
         <pluginManagement>
