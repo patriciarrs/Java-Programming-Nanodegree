@@ -1,8 +1,31 @@
+## Index
+
+- [Maven](#maven)
+  - [Build Lifecycle Phases](#build-lifecycle-phases)
+  - [Projects](#projects)
+    - [POM](#pom-project-object-model)
+    - [Phases & POM](#phases--pom)
+    - [Create a Maven Project](#create-a-maven-project)
+      - [Command line](#command-line)
+      - [IntelliJ](#intellij)
+    - [Standard Directory Layout](#standard-directory-layout)
+    - [Dependencies](#dependencies)
+      - [Scope](#scope)
+      - [Type](#type)
+      - [Transitive](#transitive)
+    - [Inheritance](#inheritance)
+    - [Multiple Modules](#multiple-modules)
+  - [Plugins](#plugins)
+    - [Customizing](#customizing)
+  - [Properties](#properties)
+    - [Automatic](#automatic)
+  - [Reporting](#reporting)
+
 # Maven
 
 - Maven is a build tool (performs the steps of the build process according to a configuration).
 
-# Build Lifecycle Phases
+## Build Lifecycle Phases
 
 - Maven organizes the build process into **phases** (steps of the build).
 - A phase processes the **goals** (actions) attached to it.
@@ -21,11 +44,11 @@
 
 > Executing a phase will run all the preceding phases.
 
-# Projects
+## Projects
 
 > A Maven project is defined by a pom.xml.
 
-## POM (Project Object Model)
+### POM (Project Object Model)
 
 **Minimal POM:**
 
@@ -50,16 +73,16 @@
 
 > `groupId` + `artifactId` → uniquely identifies the project
 
-## Phases & POM
+### Phases & POM
 
 > `mvn <phase>` → runs the desired maven phase
 
 - If we run `mvn package` with the minimal POM, Maven will create a `target` directory containing the JAR.
 - The JAR only has the `META-INF` directory with the `MANIFEST.MF` file.
 
-## Create a Maven Project
+### Create a Maven Project
 
-### Command line
+#### Command line
 
 1. `mvn archetype:generate`
 2. Press enter to accept the default template (maven quickstart project).
@@ -68,7 +91,7 @@
 
 Maven will create a new project directory with a `pom.xml` some starter source code and test directories.
 
-### IntelliJ
+#### IntelliJ
 
 1. File > New > Project
 2. Maven Archetype
@@ -81,7 +104,7 @@ Maven will create a new project directory with a `pom.xml` some starter source c
 
 3. Create
 
-## Standard Directory Layout
+### Standard Directory Layout
 
 ![Maven Standard Directory Layout](images/maven-standard-directory-layout.jpg "Maven Standard Directory Layout")
 
@@ -103,7 +126,7 @@ Maven will create a new project directory with a `pom.xml` some starter source c
 
 ![Maven Standard Directory Layout](images/maven-standard-directory-layout2.png "Maven Standard Directory Layout")
 
-## Dependencies
+### Dependencies
 
 - **Dependency** - External Java source (often a JAR) that is not part of the program and not part of the Java standard
   library.
@@ -140,7 +163,7 @@ Maven:
 </project>
 ```
 
-### Scope
+#### Scope
 
 > The `scope` element of a dependency tells Maven when to include that dependency.
 
@@ -179,7 +202,7 @@ Maven:
 </project>
 ```
 
-### Type
+#### Type
 
 > The `type` element tells Maven what type of artifact is provided by a dependency.
 
@@ -219,7 +242,7 @@ Maven:
 </project>
 ```
 
-### Transitive
+#### Transitive
 
 **Transitive dependency** - resource required by one of the dependencies included in your project.
 
@@ -268,7 +291,7 @@ To resolve transitive dependency confusion, there are 2 options:
 </project>
 ```
 
-## Inheritance
+### Inheritance
 
 All POMs in Maven inherit from the [**Super POM**](https://maven.apache.org/pom.html#the-super-pom).
 
@@ -313,7 +336,7 @@ don't need to specify JUnit here.
 </project>
 ```
 
-## Multiple Modules
+### Multiple Modules
 
 What if we wanted to make a single project that would build both our UserService and SalesService artifacts at the same
 time?
@@ -342,7 +365,7 @@ Now, when we run `mvn package`, both projects will be built.
 </project>
 ```
 
-### Create a multi-module maven project from scratch
+#### Create a multi-module maven project from scratch
 
 1. `mvn archetype:generate` -> pom-root -> fill all the details.
 2. `cd` to the new directory.
@@ -352,7 +375,7 @@ Now, when we run `mvn package`, both projects will be built.
 
 We can also use IntelliJ wizard or do this manually.
 
-# Plugins
+## Plugins
 
 > All Maven goals are performed by plugins.
 
@@ -410,7 +433,7 @@ Default plugin bindings for each phase in JAR projects (`<groupId>:<pluginArtifa
 </project>
 ```
 
-## Customizing
+### Customizing
 
 ```xml
 
@@ -459,7 +482,7 @@ Default plugin bindings for each phase in JAR projects (`<groupId>:<pluginArtifa
 </project>
 ```
 
-# Properties
+## Properties
 
 The properties `maven.compiler.source` and `target` set the version value that will be used by the
 `maven-compiler-plugin`.
@@ -514,7 +537,7 @@ We can define our own properties and reference them elsewhere in our POM (e.g., 
 </project>
 ```
 
-## Automatic
+### Automatic
 
 - **Environment variables** - any variables in the shell's environment.
     - `${env.VAR_NAME}` (e.g., `${env.PATH}`).
@@ -525,7 +548,7 @@ We can define our own properties and reference them elsewhere in our POM (e.g., 
 - **Java System properties** - anything provided by `java.lang.System.getProperties()`.
     - `${java.propName}`
 
-# Reporting
+## Reporting
 
 > Happens during a phase called `site` (it is not part of the default JAR lifecycle).
 
