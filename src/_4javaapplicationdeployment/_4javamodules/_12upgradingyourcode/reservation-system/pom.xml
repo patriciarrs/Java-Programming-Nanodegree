@@ -8,7 +8,7 @@
     <artifactId>reservation-system</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <name>Reservation system</name>
 
     <properties>
