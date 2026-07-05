@@ -324,7 +324,9 @@ don't need to specify JUnit here.
 ```xml
 
 <project>
-    <parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
         <groupId>com.udacity.jpnd</groupId>
         <artifactId>maven-test-parent</artifactId>
         <version>1.0.0</version>
