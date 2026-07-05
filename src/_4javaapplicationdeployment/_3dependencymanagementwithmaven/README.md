@@ -461,7 +461,8 @@ Default plugin bindings for each phase in JAR projects (`<groupId>:<pluginArtifa
 
 # Properties
 
-The properties `maven.compiler.source` and `target` set the version value that will be used by the `maven-compiler-plugin`.
+The properties `maven.compiler.source` and `target` set the version value that will be used by the
+`maven-compiler-plugin`.
 We could do the same thing by configuring the plugin directly (in the `configuration` element).
 
 We can define our own properties and reference them elsewhere in our POM (e.g., `some.plugin.version`).
@@ -504,9 +505,9 @@ We can define our own properties and reference them elsewhere in our POM (e.g., 
             </plugins>
 
             <plugin>
-              <groupId>my.group</groupId>
-              <artifactId>some-plugin</artifactId>
-              <version>${some.plugin.version}</version>
+                <groupId>my.group</groupId>
+                <artifactId>some-plugin</artifactId>
+                <version>${some.plugin.version}</version>
             </plugin>
         </pluginManagement>
     </build>
@@ -516,10 +517,54 @@ We can define our own properties and reference them elsewhere in our POM (e.g., 
 ## Automatic
 
 - **Environment variables** - any variables in the shell's environment.
-  - `${env.VAR_NAME}` (e.g., `${env.PATH}`).
+    - `${env.VAR_NAME}` (e.g., `${env.PATH}`).
 - **POM elements** - values in the POM can be referenced according to their place in the object structure.
-  - e.g., `${project.groupId}` (to reference the `<project><groupId>value</groupId></project>`)
+    - e.g., `${project.groupId}` (to reference the `<project><groupId>value</groupId></project>`)
 - **Settings.xml** - users can provide customizations to their Maven profile in a `settings.xml` file.
-  - `${settings.propName}`
+    - `${settings.propName}`
 - **Java System properties** - anything provided by `java.lang.System.getProperties()`.
-  - `${java.propName}`
+    - `${java.propName}`
+
+# Reporting
+
+> Happens during a phase called `site` (it is not part of the default JAR lifecycle).
+
+`mvn site` - generates documentation about the project.
+We can customize this behavior by adding additional plugins to the `reporting` element (at the top level of the
+`project` element).
+
+For example, we can run the JavaDoc plugin during the site phase:
+
+```xml
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+    </properties>
+
+    <modules>
+    </modules>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>
+```
