@@ -452,13 +452,74 @@ Default plugin bindings for each phase in JAR projects (`<groupId>:<pluginArtifa
                 </executions>
             </plugin>
         </plugins>
-        
+
         <pluginManagement>
         </pluginManagement>
     </build>
 </project>
 ```
 
-
 # Properties
 
+The properties `maven.compiler.source` and `target` set the version value that will be used by the `maven-compiler-plugin`.
+We could do the same thing by configuring the plugin directly (in the `configuration` element).
+
+We can define our own properties and reference them elsewhere in our POM (e.g., `some.plugin.version`).
+
+```xml
+
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.udacity.jpnd</groupId>
+    <artifactId>maven-test-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <some.plugin.version>2.0</some.plugin.version>
+    </properties>
+
+    <modules>
+    </modules>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+
+                    <configuration>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+
+            <plugin>
+              <groupId>my.group</groupId>
+              <artifactId>some-plugin</artifactId>
+              <version>${some.plugin.version}</version>
+            </plugin>
+        </pluginManagement>
+    </build>
+</project>
+```
+
+## Automatic
+
+- **Environment variables** - any variables in the shell's environment.
+  - `${env.VAR_NAME}` (e.g., `${env.PATH}`).
+- **POM elements** - values in the POM can be referenced according to their place in the object structure.
+  - e.g., `${project.groupId}` (to reference the `<project><groupId>value</groupId></project>`)
+- **Settings.xml** - users can provide customizations to their Maven profile in a `settings.xml` file.
+  - `${settings.propName}`
+- **Java System properties** - anything provided by `java.lang.System.getProperties()`.
+  - `${java.propName}`
