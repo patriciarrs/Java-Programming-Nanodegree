@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._12upgradingyourcode.reservation;
+package com.udacity.flight.model;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;

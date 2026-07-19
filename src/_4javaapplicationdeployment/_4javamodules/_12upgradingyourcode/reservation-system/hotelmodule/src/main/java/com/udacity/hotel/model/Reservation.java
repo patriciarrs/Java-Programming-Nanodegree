@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._12upgradingyourcode.reservation;
+package com.udacity.hotel.model;
 
 import java.time.LocalDate;
 import java.util.Objects;

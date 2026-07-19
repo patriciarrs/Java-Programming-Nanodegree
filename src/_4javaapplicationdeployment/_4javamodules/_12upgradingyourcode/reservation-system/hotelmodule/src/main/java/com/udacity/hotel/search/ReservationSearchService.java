@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._12upgradingyourcode.reservation;
+package com.udacity.hotel.search;
 
 import com.udacity.hotel.model.Reservation;
 

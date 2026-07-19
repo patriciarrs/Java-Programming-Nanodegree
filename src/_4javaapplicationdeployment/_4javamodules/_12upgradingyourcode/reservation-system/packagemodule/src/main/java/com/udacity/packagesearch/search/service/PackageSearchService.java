@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._4javamodules._12upgradingyourcode.reservation;
+package com.udacity.packagesearch.search.service;
 
 import com.udacity.flight.model.Flight;
 import com.udacity.flight.search.FlightSearchService;
