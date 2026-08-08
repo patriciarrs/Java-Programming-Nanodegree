@@ -1,4 +1,4 @@
-package _4javaapplicationdeployment._5unittestingwithjava._10additionalunittesttopics.cart.src.main.java.com.udacity.cart.model;
+package com.udacity.cart.model;
 
 import java.util.Objects;
 
